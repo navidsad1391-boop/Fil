@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل پروکسی</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Tahoma,sans-serif;background:#111;color:#fff;padding:15px}
+h1{text-align:center;padding:15px;background:#1a73e8;border-radius:10px;margin-bottom:15px}
+.box{background:#222;border-radius:10px;padding:15px;margin:10px 0}
+.btn{display:inline-block;padding:10px 15px;border-radius:8px;color:#fff;text-decoration:none;font-size:13px;margin:3px}
+.g{background:#0a8f3c}.b{background:#1a73e8}
+.ok{color:#0f0}.no{color:#f00}
+.item{background:#111;padding:8px;border-radius:6px;margin:5px 0;font-size:11px;direction:ltr;text-align:left;word-break:break-all}
+</style>
+</head>
+<body>
+<h1>پنل فیلترشکن و پروکسی</h1>
+<div class="box">
+<h3>کانفیگ V2Ray</h3>
+<div id="configs"><p>در حال بارگذاری...</p></div>
+</div>
+<div class="box">
+<h3>پروکسی</h3>
+<div id="proxies"><p>در حال بارگذاری...</p></div>
+</div>
+<div class="box">
+<h3>تست</h3>
+<div id="test"><p>در حال بارگذاری...</p></div>
+</div>
+<script>
+async function load(){
+try{let r=await fetch('data/configs.json?t='+Date.now());let d=await r.json();let h='';d.forEach(c=>{h+='<div class="item"><span class="'+(c.ok?'ok':'no')+'">'+(c.ok?'✅':'❌')+'</span> '+c.name+' | '+c.ping+'ms<br><a class="btn g" href="'+c.link+'">ایمپورت</a></div>'});document.getElementById('configs').innerHTML=h||'<p class="no">داده‌ای نیست</p>'}catch(e){document.getElementById('configs').innerHTML='<p class="no">فایل configs.json نیست</p>'}
+try{let r=await fetch('data/proxies.json?t='+Date.now());let d=await r.json();let h='';d.forEach(p=>{h+='<div class="item"><span class="ok">✅</span> '+p.type+' | '+p.addr+'</div>'});document.getElementById('proxies').innerHTML=h||'<p class="no">داده‌ای نیست</p>'}catch(e){}
+try{let r=await fetch('data/test.json?t='+Date.now());let d=await r.json();document.getElementById('test').innerHTML='<p>زمان: '+d.time+'</p><p>تست۱: <span class="'+(d.t1?'ok':'no')+'">'+(d.t1?'پاس':'رد')+'</span></p><p>تست۲: <span class="'+(d.t2?'ok':'no')+'">'+(d.t2?'پاس':'رد')+'</span></p><p>جمع: '+d.found+' | فعال: '+d.valid+'</p>'}catch(e){}
+}
+load();setInterval(load,30000);
+</script>
+</body>
+</html>
